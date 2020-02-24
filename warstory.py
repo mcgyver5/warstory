@@ -106,23 +106,16 @@ class ResourceTableModel(AbstractTableModel):
 
         return len(self.data)
     def getColumnCount(self):
-        return 5
+        return len(self.COLUMN_NAMES)
         
     def getColumnName(self, columnIndex):
-        if columnIndex == 0:
-            return "file name"
-        if columnIndex == 1:
-            return "path"
-        if columnIndex == 2:
-            return "servlet"
-        if columnIndex == 3:
-            return "parameter"
-        if columnIndex == 4:
-            return "new?"
+        return self.COLUMN_NAMES[columnIndex]
+        
     def addRow(self, row=None):
 
         self.data.append(row or ['place','place','place','place','place'])
         self.fireTableRowsInserted(len(self.data) - 1, len(self.data) - 1)
+	
 class Resource:
     def __init__(self, resource_type, resource_name, file_path, param_list, header_list, http_method):
         self.resource_type = resource_type
