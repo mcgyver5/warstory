@@ -24,20 +24,13 @@ class BurpExtender(IBurpExtender, ITab):
     def	registerExtenderCallbacks(self, callbacks):
     
         # set our extension name
-        callbacks.setExtensionName("Hello world extension")
-        
-        # obtain our output and error streams
+        callbacks.setExtensionName("War Story")
         
         # obtain our output stream
         self._stdout = PrintWriter(callbacks.getStdout(), True)
-        stdout = PrintWriter(callbacks.getStdout(), True)
-        stderr = PrintWriter(callbacks.getStderr(), True)
         
         # write a message to our output stream
-        stdout.println("Loading WarStory")
-        
-        # write a message to our error stream
-        stderr.println("Hello errors")
+        self._stdout.println("Loading WarStory")
         
         # write a message to the Burp alerts tab
         callbacks.issueAlert("Hello alerts")
@@ -48,7 +41,7 @@ class BurpExtender(IBurpExtender, ITab):
         self._chooseFileButton = JButton("OPEN WAR FILE", actionPerformed=self.fileButtonClick)
         self.infoPanel.add(JLabel("THIS IS INFORMATION PANE"))
         self.infoPanel.add(self._chooseFileButton)
-        
+        # iaap.war|web.xml|axServlet|/skuppy/axservlet.do|
         self._chooseFileButton.setEnabled(True)
         initial_row = ['a','bb','ccc','ddd','eeee']
         self.fileTable = JTable(ResourceTableModel(initial_row))
@@ -84,14 +77,10 @@ class BurpExtender(IBurpExtender, ITab):
         fileChooser = JFileChooser()
         fileChooser.addChoosableFileFilter(warFilter)
         result = fileChooser.showOpenDialog(self._splitpane)
-        self._stdout.println("HERE IS result: " + str(result))
-        self._stdout.println("HERE IS expectedResult: " + str(JFileChooser.APPROVE_OPTION))
         
         if result == JFileChooser.APPROVE_OPTION:
-            self._stdout.println("APPROVE_OPTION DETECTED: " + str(JFileChooser.APPROVE_OPTION))
             f = fileChooser.getSelectedFile()
             fileName = f.getPath()
-            self._stdout.println("File name is " + fileName)
             self.populateJTable(f)
         
       
@@ -101,8 +90,7 @@ class BurpExtender(IBurpExtender, ITab):
         return "War Story"
         
     def getUiComponent(self):
-        return self._splitpane
-        
+        return self._splitpane        
 
 
 class ResourceTableModel(AbstractTableModel):
@@ -115,7 +103,7 @@ class ResourceTableModel(AbstractTableModel):
         row_values = self.data[rowIndex-1]
         return row_values[columnIndex-1]
     def getRowCount(self):
-        #self._stdout.println("rowcount is " + len(self.data))
+
         return len(self.data)
     def getColumnCount(self):
         return 5
@@ -132,7 +120,7 @@ class ResourceTableModel(AbstractTableModel):
         if columnIndex == 4:
             return "new?"
     def addRow(self, row=None):
-        #self._stdout.println("adding row")
+
         self.data.append(row or ['place','place','place','place','place'])
         self.fireTableRowsInserted(len(self.data) - 1, len(self.data) - 1)
 class Resource:
